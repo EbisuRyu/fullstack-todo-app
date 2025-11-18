@@ -1,0 +1,7 @@
+tzdata
+fastapi
+uvicorn
+loguru
+python-dotenv
+mongoengine
+pydantic-settings

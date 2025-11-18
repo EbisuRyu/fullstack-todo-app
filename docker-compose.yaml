@@ -1,0 +1,71 @@
+services:
+  mongo:
+    image: mongo:6
+    container_name: todo-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: todo_db
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - todo-network
+  
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: todo-mongo-express
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_EXPRESS_USERNAME:-admin}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_EXPRESS_PASSWORD:-admin123}
+    ports:
+      - "8081:8081"
+    networks:
+      - todo-network
+
+  backend:
+    build:
+      context: ./backend
+    container_name: todo-backend
+    restart: unless-stopped
+    environment:
+      MONGO_URI: mongodb://mongo:27017/todo_db
+      MONGO_DATABASE: todo_db
+    depends_on:
+      - mongo
+    ports:
+      - "8000:8000"
+    networks:
+      - todo-network
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        BACKEND_URL: ${BACKEND_URL:-http://todo-backend:8000/api}
+    container_name: todo-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+    networks:
+      - todo-network
+
+volumes:
+  mongo_data:
+
+networks:
+  todo-network:
+    driver: bridge
