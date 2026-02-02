@@ -1,176 +1,202 @@
-# 🧩 TaskFlow
+# TaskFlow
 
-[![Docker](https://img.shields.io/badge/docker-ready-blue?logo=docker)](https://www.docker.com/) [![React](https://img.shields.io/badge/react-19-blue?logo=react)](https://reactjs.org/) [![FastAPI](https://img.shields.io/badge/FastAPI-3.0-lightblue)](https://fastapi.tiangolo.com/) [![MongoDB](https://img.shields.io/badge/MongoDB-6.0-green?logo=mongodb)](https://www.mongodb.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://reactjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-6.0-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
-A **modern fullstack task management application** built with **FastAPI**, **React (Vite)**, and **MongoDB**.
-Designed for **seamless development and deployment** using **Docker Compose**, it provides a clean UI alongside fully RESTful CRUD APIs.
+A fullstack task management application built with **FastAPI**, **React (Vite)**, and **MongoDB**.
 
-**This project includes:**
-
-* ⚡ **FastAPI Backend** — Lightweight, high-performance Python API with MongoEngine
-* 💅 **React + Tailwind Frontend** — Responsive, elegant, and modern interface
-* 🧠 **MongoDB Integration** — Document-based data storage with Mongo Express UI
-* 🐳 **Dockerized Infrastructure** — One command to spin up the full stack
-* 🔍 **Swagger API Docs** — Auto-generated, interactive API documentation
-
-<div align="center">
-  <a href="https://youtu.be/XUO0np7tThU" target="_blank">
-    <img src="./public/demo.gif" 
-         alt="Video Demo" 
-         width="450" 
-         style="border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);"/>
+<p align="center">
+  <a href="https://youtu.be/XUO0np7tThU">
+    <img src="./public/demo.gif" alt="Demo" width="500"/>
   </a>
-  <p><b>Click to watch the full demo on YouTube</b></p>
-</div>
+</p>
 
----
+## Features
 
-### 📁 Project Structure
+TaskFlow comes with everything you need to manage your tasks efficiently. The application combines a powerful backend with a beautiful frontend to deliver a seamless user experience.
+
+- **FastAPI Backend** — High-performance async API with MongoEngine
+- **React + Tailwind** — Modern, responsive UI
+- **MongoDB** — Document-based data storage with Mongo Express UI
+- **Docker Compose** — One command to run the entire stack
+- **Swagger Docs** — Auto-generated interactive API documentation
+
+## Project Structure
+
+The project follows a clean separation between frontend and backend. Each layer is independently deployable and can be developed separately.
 
 ```
 fullstack-todo-app/
-├── backend/              # FastAPI backend (models, schemas, services)
-├── frontend/             # React + Vite frontend application
-├── docker-compose.yaml   # Full stack setup (MongoDB, backend, frontend, Mongo Express)
-├── README.md             # Project documentation
-└── .gitignore            # Git ignore rules
+├── backend/              # FastAPI backend
+│   ├── src/
+│   │   ├── models/       # MongoDB models
+│   │   ├── routes/       # API endpoints
+│   │   ├── schemas/      # Pydantic schemas
+│   │   └── services/     # Business logic
+│   └── main.py
+├── frontend/             # React + Vite frontend
+│   ├── src/
+│   │   ├── components/   # React components
+│   │   ├── pages/        # Page components
+│   │   └── lib/          # Utilities
+│   └── package.json
+├── docker-compose.yaml
+└── README.md
 ```
 
----
+## Getting Started
 
-### 🔧 System Requirements
+Follow these steps to get TaskFlow running on your local machine. You can choose between Docker (recommended for quick setup) or manual installation for development.
 
-* **Docker & Docker Compose** (recommended: latest Docker Desktop)
-* **If running locally:**
+### Prerequisites
 
-  * Node.js ≥ 20
-  * Python ≥ 3.11
-  * MongoDB
+- **Docker & Docker Compose** (recommended)
+- Or for local development: Node.js ≥ 20, Python ≥ 3.11, MongoDB
 
----
-
-### ⚙️ Environment Variables
-
-#### Root `.env`
-
-(Automatically loaded by Docker Compose)
+### Clone Repository
 
 ```bash
+git clone https://github.com/yourusername/fullstack-todo-app.git
+cd fullstack-todo-app
+```
+
+### Run with Docker (Recommended)
+
+Create `.env` file in root directory:
+
+```env
 BACKEND_URL=http://todo-backend:8000/api
 MONGO_EXPRESS_USERNAME=admin
 MONGO_EXPRESS_PASSWORD=admin123
 ```
 
-#### `backend/.env`
+Build and start all services:
 
 ```bash
+docker compose up -d --build
+```
+
+Access the application:
+
+| Service       | URL                                               |
+| ------------- | ------------------------------------------------- |
+| Frontend      | [localhost:8080](http://localhost:8080)           |
+| API Docs      | [localhost:8000/docs](http://localhost:8000/docs) |
+| Mongo Express | [localhost:8081](http://localhost:8081)           |
+
+Stop services:
+
+```bash
+docker compose down      # Keep data
+docker compose down -v   # Remove data
+```
+
+### Run Locally (Without Docker)
+
+**Backend:**
+
+```bash
+cd backend
+python -m venv .venv
+.venv\Scripts\activate      # Windows
+source .venv/bin/activate   # macOS/Linux
+pip install -r requirements.txt
+```
+
+Create `backend/.env`:
+
+```env
 MONGO_URI=mongodb://localhost:27017/todo_db
 MONGO_DATABASE=todo_db
 ```
 
-#### `frontend/.env` (local Vite only)
+Start server:
 
 ```bash
-BACKEND_URL=http://localhost:8000/api
-```
-
-> When using Docker Compose, `BACKEND_URL` from the root `.env` is automatically injected into the frontend build.
-
----
-
-### 🐳 Run with Docker Compose
-
-1. Create `.env` file in the root directory (example above).
-2. Build and start all services:
-
-   ```bash
-   docker compose up -d --build
-   ```
-3. Access the stack:
-
-   * 🖥️ Frontend → [http://localhost:8080](http://localhost:8080)
-   * ⚙️ Backend API Docs → [http://localhost:8000/docs](http://localhost:8000/docs)
-   * 📊 Mongo Express → [http://localhost:8081](http://localhost:8081)
-4. Stop and remove containers:
-
-   ```bash
-   docker compose down
-   ```
-
-   Add `-v` to remove the MongoDB volume (`mongo_data`).
-
----
-
-### 💻 Run Locally (Without Docker)
-
-#### Backend
-
-Create environment:
-```bash
-cd backend
-python -m venv .venv
-```
-
-Activate environment:
-* Windows:
-   ```bash
-   .venv\Scripts\activate
-   ```
-* macOS/Linux:
-   ```bash
-   source .venv/bin/activate
-   ```
-
-Install & Run:
-```
-pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
 ```
 
-#### Frontend
+**Frontend:**
 
 ```bash
 cd frontend
 npm install
+```
+
+Create `frontend/.env`:
+
+```env
+BACKEND_URL=http://localhost:8000/api
+```
+
+Start dev server:
+
+```bash
 npm run dev
 ```
 
-Visit [http://localhost:5173](http://localhost:5173) and ensure `frontend/.env` points to the backend.
-
-#### MongoDB
-
-Run via Docker if not installed locally:
+**MongoDB** (if not installed locally):
 
 ```bash
 docker run -d --name mongo -p 27017:27017 -v mongo_data:/data/db mongo:6
 ```
 
----
+## Usage
 
-### 📚 API Overview
+Once the application is running, you can start managing your tasks through the web interface or API. The UI provides an intuitive way to organize your daily tasks with filtering capabilities.
 
-| Method   | Endpoint                        | Description               |
-| -------- | --------------------------------| ------------------------- |
-| `GET`    | `/api/tasks?filter=<today, week, month, all>` | Get task list by filter  |
-| `GET`    | `/api/tasks/{task_id}`          | Retrieve task details     |
-| `POST`   | `/api/tasks`                    | Create a new task         |
-| `PUT`    | `/api/tasks/{task_id}`          | Update a task             |
-| `DELETE` | `/api/tasks/{task_id}`          | Delete a task             |
+### Managing Tasks
 
----
+1. **Create Task** — Click "Add Task" button, enter title and description
+2. **View Tasks** — All tasks are displayed on the homepage
+3. **Filter Tasks** — Use filter buttons to show tasks by date (Today, Week, Month, All)
+4. **Edit Task** — Click on a task to edit its details
+5. **Complete Task** — Click the checkbox to mark task as complete
+6. **Delete Task** — Click the delete icon to remove a task
 
-## 🧠 Notes
+### API Usage
 
-* Follows a **modular architecture** for maintainability
-* Ideal for learning **FastAPI + React + MongoDB** integration
-* Works both in **local dev** and **containerized** environments
+Create a new task:
 
----
+```bash
+curl -X POST http://localhost:8000/api/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title": "My Task", "description": "Task description"}'
+```
 
-### 📄 License
+Get all tasks:
 
-Distributed under the **MIT License**.  
-See the `LICENSE` file for more information.
+```bash
+curl http://localhost:8000/api/tasks
+```
 
----
+Get tasks with filter:
+
+```bash
+curl http://localhost:8000/api/tasks?filter=today
+```
+
+## API Reference
+
+The backend provides a RESTful API for all task operations. All endpoints are prefixed with `/api` and return JSON responses. Interactive documentation is available via Swagger UI.
+
+| Method   | Endpoint          | Description      |
+| -------- | ----------------- | ---------------- |
+| `GET`    | `/api/tasks`      | Get all tasks    |
+| `GET`    | `/api/tasks/{id}` | Get task details |
+| `POST`   | `/api/tasks`      | Create new task  |
+| `PUT`    | `/api/tasks/{id}` | Update task      |
+| `DELETE` | `/api/tasks/{id}` | Delete task      |
+
+**Query Parameters:**
+
+- `filter` — Filter tasks by date: `today`, `week`, `month`, `all`
+
+> Full interactive documentation available at [localhost:8000/docs](http://localhost:8000/docs)
+
+## License
+
+This project is open source and available under the MIT License. Feel free to use, modify, and distribute this project. See the [LICENSE](LICENSE) file for more details.
