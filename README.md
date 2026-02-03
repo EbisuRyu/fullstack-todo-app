@@ -6,66 +6,44 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.0-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
-A fullstack task management application built with **FastAPI**, **React (Vite)**, and **MongoDB**.
+Fullstack task management app built with **FastAPI**, **React (Vite)**, and **MongoDB**. Fast setup, smooth UI, and a clean API.
 
 <p align="center">
   <a href="https://youtu.be/XUO0np7tThU">
-    <img src="./public/demo.gif" alt="Demo" width="500"/>
+    <img src="./public/demo.gif" alt="Demo" width="520"/>
   </a>
 </p>
 
-## Features
+## Highlights
 
-TaskFlow comes with everything you need to manage your tasks efficiently. The application combines a powerful backend with a beautiful frontend to deliver a seamless user experience.
+TaskFlow focuses on speed, clarity, and a good developer experience. The stack is modern and production-friendly, with Docker support for one-command setup.
 
-- **FastAPI Backend** — High-performance async API with MongoEngine
-- **React + Tailwind** — Modern, responsive UI
-- **MongoDB** — Document-based data storage with Mongo Express UI
-- **Docker Compose** — One command to run the entire stack
-- **Swagger Docs** — Auto-generated interactive API documentation
+- **FastAPI backend** with async performance and auto Swagger docs
+- **React + Vite frontend** for fast HMR and smooth UI
+- **MongoDB storage** with a document-first data model
+- **Docker Compose** to run the full stack in one command
 
 ## Project Structure
 
-The project follows a clean separation between frontend and backend. Each layer is independently deployable and can be developed separately.
+The repository is split into `backend/` and `frontend/` with a shared Docker configuration at the root. Each side is independently runnable while still wired together through environment variables.
 
 ```
 fullstack-todo-app/
-├── backend/              # FastAPI backend
-│   ├── src/
-│   │   ├── models/       # MongoDB models
-│   │   ├── routes/       # API endpoints
-│   │   ├── schemas/      # Pydantic schemas
-│   │   └── services/     # Business logic
-│   └── main.py
-├── frontend/             # React + Vite frontend
-│   ├── src/
-│   │   ├── components/   # React components
-│   │   ├── pages/        # Page components
-│   │   └── lib/          # Utilities
-│   └── package.json
-├── docker-compose.yaml
-└── README.md
+|-- backend/               # FastAPI backend
+|-- frontend/              # React + Vite frontend
+|-- public/                # Demo assets
+|-- docker-compose.yaml
+|-- LICENSE
+`-- README.md
 ```
 
 ## Getting Started
 
-Follow these steps to get TaskFlow running on your local machine. You can choose between Docker (recommended for quick setup) or manual installation for development.
+You can run everything with Docker or start the backend and frontend locally. Both paths are documented below and use the same API base URL concept.
 
-### Prerequisites
+### Docker Setup (Recommended)
 
-- **Docker & Docker Compose** (recommended)
-- Or for local development: Node.js ≥ 20, Python ≥ 3.11, MongoDB
-
-### Clone Repository
-
-```bash
-git clone https://github.com/yourusername/fullstack-todo-app.git
-cd fullstack-todo-app
-```
-
-### Run with Docker (Recommended)
-
-Create `.env` file in root directory:
+Create a root `.env` file and then start the stack with Docker Compose. This brings up the API, UI, and Mongo Express in one step.
 
 ```env
 BACKEND_URL=http://todo-backend:8000/api
@@ -73,30 +51,13 @@ MONGO_EXPRESS_USERNAME=admin
 MONGO_EXPRESS_PASSWORD=admin123
 ```
 
-Build and start all services:
-
 ```bash
 docker compose up -d --build
 ```
 
-Access the application:
+### Local Development (No Docker)
 
-| Service       | URL                                               |
-| ------------- | ------------------------------------------------- |
-| Frontend      | [localhost:8080](http://localhost:8080)           |
-| API Docs      | [localhost:8000/docs](http://localhost:8000/docs) |
-| Mongo Express | [localhost:8081](http://localhost:8081)           |
-
-Stop services:
-
-```bash
-docker compose down      # Keep data
-docker compose down -v   # Remove data
-```
-
-### Run Locally (Without Docker)
-
-**Backend:**
+Set up the backend with a Python virtual environment, then install frontend dependencies and run Vite. You will also need a local MongoDB instance if you are not using Docker.
 
 ```bash
 cd backend
@@ -104,62 +65,34 @@ python -m venv .venv
 .venv\Scripts\activate      # Windows
 source .venv/bin/activate   # macOS/Linux
 pip install -r requirements.txt
-```
-
-Create `backend/.env`:
-
-```env
-MONGO_URI=mongodb://localhost:27017/todo_db
-MONGO_DATABASE=todo_db
-```
-
-Start server:
-
-```bash
 uvicorn main:app --reload --port 8000
 ```
-
-**Frontend:**
 
 ```bash
 cd frontend
 npm install
-```
-
-Create `frontend/.env`:
-
-```env
-BACKEND_URL=http://localhost:8000/api
-```
-
-Start dev server:
-
-```bash
 npm run dev
-```
-
-**MongoDB** (if not installed locally):
-
-```bash
-docker run -d --name mongo -p 27017:27017 -v mongo_data:/data/db mongo:6
 ```
 
 ## Usage
 
-Once the application is running, you can start managing your tasks through the web interface or API. The UI provides an intuitive way to organize your daily tasks with filtering capabilities.
+Create, edit, complete, and delete tasks directly from the UI with quick filters for Today, Week, and Month. The experience is designed to be simple and fast for daily task tracking.
 
-### Managing Tasks
+### API Reference
 
-1. **Create Task** — Click "Add Task" button, enter title and description
-2. **View Tasks** — All tasks are displayed on the homepage
-3. **Filter Tasks** — Use filter buttons to show tasks by date (Today, Week, Month, All)
-4. **Edit Task** — Click on a task to edit its details
-5. **Complete Task** — Click the checkbox to mark task as complete
-6. **Delete Task** — Click the delete icon to remove a task
+All endpoints are prefixed with `/api` and return JSON, and Swagger UI is available at `http://localhost:8000/docs`. The table below lists the core task endpoints.
 
-### API Usage
+| Method   | Endpoint          | Description      |
+| -------- | ----------------- | ---------------- |
+| `GET`    | `/api/tasks`      | List all tasks   |
+| `GET`    | `/api/tasks/{id}` | Get task details |
+| `POST`   | `/api/tasks`      | Create a task    |
+| `PUT`    | `/api/tasks/{id}` | Update a task    |
+| `DELETE` | `/api/tasks/{id}` | Delete a task    |
 
-Create a new task:
+### API Examples
+
+Use these curl commands to create and query tasks during development. They target the default local API URL.
 
 ```bash
 curl -X POST http://localhost:8000/api/tasks \
@@ -167,36 +100,10 @@ curl -X POST http://localhost:8000/api/tasks \
   -d '{"title": "My Task", "description": "Task description"}'
 ```
 
-Get all tasks:
-
 ```bash
 curl http://localhost:8000/api/tasks
 ```
 
-Get tasks with filter:
-
-```bash
-curl http://localhost:8000/api/tasks?filter=today
-```
-
-## API Reference
-
-The backend provides a RESTful API for all task operations. All endpoints are prefixed with `/api` and return JSON responses. Interactive documentation is available via Swagger UI.
-
-| Method   | Endpoint          | Description      |
-| -------- | ----------------- | ---------------- |
-| `GET`    | `/api/tasks`      | Get all tasks    |
-| `GET`    | `/api/tasks/{id}` | Get task details |
-| `POST`   | `/api/tasks`      | Create new task  |
-| `PUT`    | `/api/tasks/{id}` | Update task      |
-| `DELETE` | `/api/tasks/{id}` | Delete task      |
-
-**Query Parameters:**
-
-- `filter` — Filter tasks by date: `today`, `week`, `month`, `all`
-
-> Full interactive documentation available at [localhost:8000/docs](http://localhost:8000/docs)
-
 ## License
 
-This project is open source and available under the MIT License. Feel free to use, modify, and distribute this project. See the [LICENSE](LICENSE) file for more details.
+MIT License. See `LICENSE` for details.
