@@ -23,7 +23,7 @@ TaskFlow focuses on speed, clarity, and a good developer experience. The stack i
 - **MongoDB storage** with a document-first data model
 - **Docker Compose** to run the full stack in one command
 
-## Project Structure
+## Repository Structure
 
 The repository is split into `backend/` and `frontend/` with a shared Docker configuration at the root. Each side is independently runnable while still wired together through environment variables.
 
