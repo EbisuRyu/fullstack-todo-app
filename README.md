@@ -39,7 +39,21 @@ fullstack-todo-app/
 
 ## Getting Started
 
-You can run everything with Docker or start the backend and frontend locally. Both paths are documented below and use the same API base URL concept.
+Choose Docker for a one-command setup, or run the backend and frontend locally for full control. Both options are outlined below.
+
+### Prerequisites
+
+- Python 3.10+
+- Node.js 18+
+- MongoDB 6.0+
+
+### Installation
+
+Clone the repository:
+```bash
+git clone https://github.com/EbisuRyu/transformer-from-scratch.git
+cd transformer-from-scratch
+```
 
 ### Docker Setup (Recommended)
 
