@@ -10,7 +10,7 @@ Fullstack task management app built with **FastAPI**, **React (Vite)**, and **Mo
 
 <p align="center">
   <a href="https://youtu.be/XUO0np7tThU">
-    <img src="./public/demo.gif" alt="Demo" width="520"/>
+    <img src="./public/demo.gif" alt="Demo" width="80%"/>
   </a>
 </p>
 
