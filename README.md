@@ -51,8 +51,8 @@ Choose Docker for a one-command setup, or run the backend and frontend locally f
 
 Clone the repository:
 ```bash
-git clone https://github.com/EbisuRyu/transformer-from-scratch.git
-cd transformer-from-scratch
+git clone https://github.com/ebisuryu/fullstack-todo-app.git
+cd fullstack-todo-app
 ```
 
 ### Docker Setup (Recommended)
@@ -120,4 +120,4 @@ curl http://localhost:8000/api/tasks
 
 ## License
 
-MIT License. See `LICENSE` for details.
+This project is licensed under the MIT License. See LICENSE.
